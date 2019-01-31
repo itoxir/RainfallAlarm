@@ -24,7 +24,6 @@ from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_a
 
 from scipy.ndimage.filters import gaussian_filter
 
-
 import numpy as np
 
 import keras.backend as K
@@ -140,10 +139,10 @@ def create_unet_model3D(input_image_size,
                         n_labels=1,
                         layers=4,
                         lowest_resolution=16,
-                        convolution_kernel_size=(5,5,5),
-                        deconvolution_kernel_size=(5,5,5),
+                        convolution_kernel_size=(3,5,5),
+                        deconvolution_kernel_size=(3,5,5),
                         deconvolution_kernel_size_2D=(3,5,5),
-                        pool_size=(2,2,2),
+                        pool_size=(1,2,2),
                         strides=(2,2,2),
                         mode='classification',
                         output_activation='tanh',
@@ -216,13 +215,13 @@ def create_unet_model3D(input_image_size,
             unet_model.compile(loss='categorical_crossentropy', 
                                 optimizer=opt.Adam(lr=init_lr), metrics=['accuracy', 'categorical_crossentropy'])
     elif mode =='regression':
-        outputs = Conv3D(filters=number_of_classification_labels, kernel_size=(5,1,1), 
+        outputs = Conv3D(filters=number_of_classification_labels, kernel_size=(2,1,1), 
                         activation=output_activation)(outputs)
-        outputs = Conv3D(filters=number_of_classification_labels, kernel_size=(5,1,1), 
+        outputs = Conv3D(filters=number_of_classification_labels, kernel_size=(3,1,1), 
                         activation=output_activation)(outputs)
-        outputs = Conv3D(filters=number_of_classification_labels, kernel_size=(5,1,1), 
+        outputs = Conv3D(filters=number_of_classification_labels, kernel_size=(3,1,1), 
                         activation=output_activation)(outputs)
-        outputs = Conv3D(filters=number_of_classification_labels, kernel_size=(4,1,1), 
+        outputs = Conv3D(filters=number_of_classification_labels, kernel_size=(3,1,1), 
                         activation=output_activation)(outputs)
         unet_model = Model(inputs=inputs, outputs=outputs)
         
@@ -232,6 +231,35 @@ def create_unet_model3D(input_image_size,
 
     return unet_model
   
-  unet_model = create_unet_model3D( (16,64,64,1), 1, 5, mode='regression')
-  unet_model.summary()
+unet_model = create_unet_model3D( (8,768,768,1), 1, 5, mode='regression')
+unet_model.compile(optimizer=Adam(), loss="mean_squared_error", metrics=["mae"])
+unet_model.summary()
   
+X_train, X_test, Y_train, Y_test = sklearn.model_selection.train_test_split(
+    trainingX, trainingY, test_size=0.2, random_state=42)
+
+print ((np.asarray(X_train).shape))
+
+X_train = X_train.astype('float32') / 255.
+X_test = X_test.astype('float32') / 255.
+X_train = np.reshape(X_train, (2, 8, 768,768, 1))
+X_test = np.reshape(X_test, ( 1, 8, 768,768, 1))
+
+Y_train = Y_train.astype('float32') / 255.
+Y_test = Y_test.astype('float32') / 255.
+Y_train = np.reshape(Y_train,( 2, 1, 768,768, 1))
+Y_test = np.reshape(Y_test,( 1, 1, 768,768, 1))
+
+print(X_train.shape, X_train.dtype)
+print(Y_train.shape, Y_train.dtype)
+print(X_test.shape, X_test.dtype)
+print(Y_test.shape, Y_test.dtype)
+
+callbacks = [
+    EarlyStopping(patience=25, verbose=1),
+    ReduceLROnPlateau(factor=0.1, patience=3, min_lr=0.00001, verbose=1),
+    ModelCheckpoint('model-raindar1.h', verbose=1, save_best_only=True, save_weights_only=True)
+]
+
+results = unet_model.fit(X_train, Y_train, batch_size=32, epochs=20, callbacks=callbacks,
+                    validation_data=(X_test, Y_test))
