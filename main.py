@@ -1,8 +1,8 @@
-import externals.py
-import LoadRealTimeData.py
-import LoadTrainingData.py
-import UNet_3Dto2D.py
-import geo_plot_rainfall.py
+__import__ externals.py
+__import__ LoadRealTimeData.py
+__import__ LoadTrainingData.py
+__import__ UNet_3Dto2D.py
+__import__ geo_plot_rainfall.py
 
 
 load_N_images(1000)
