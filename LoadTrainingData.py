@@ -17,6 +17,10 @@ import math
 from bs4 import BeautifulSoup as BS
 import numpy as np
 
+def exists(path):
+    r = requests.head(path)
+    return r.status_code == requests.codes.ok
+
 def load_map():
     im_array=[]
     img1 = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/063/000/000/081.png").content))
