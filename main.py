@@ -15,7 +15,7 @@ from PIL import Image
 import requests
 from io import BytesIO
 
-pathDropbox='C:/Users/itoxi/Dropbox/RAinDar
+pathDropbox='C:/Users/itoxi/Dropbox/RAinDar'
 
 import externals
 import LoadTrainingData
