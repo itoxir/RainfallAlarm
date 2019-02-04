@@ -28,8 +28,6 @@ import LoadTrainingData
 
 RGBS = externals.load_colors()
 
-externals.load_map()
-
 imgs = LoadTrainingData.load_N_images(1000)
 
 print(N + ' consecutive images loaded - ready to prepare data for training')
