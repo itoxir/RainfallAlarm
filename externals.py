@@ -10,6 +10,10 @@ from PIL import Image
 import requests
 import math
 from bs4 import BeautifulSoup as BS
+from PIL import Image
+import requests
+from io import BytesIO
+
 pathDropbox='C:/Users/itoxi/Dropbox/RAinDar'
 
 def exists(path):
@@ -28,7 +32,7 @@ def merge3x3(arrImg):
     w, h = arrImg[0].size
     imgtop.paste(arrImg[0], (0, 0, w, h))
     arrImg[1].thumbnail((256, 256), Image.ANTIALIAS)
-    w, h = arrImg[1].sizemeteo
+    w, h = arrImg[1].size
     imgtop.paste(arrImg[1], (256,0 , w+256, h))
     arrImg[2].thumbnail((256, 256), Image.ANTIALIAS)
     w, h = arrImg[2].size
@@ -150,10 +154,6 @@ def extract_nbr(input_str):
                 out_number += float(ele)*0.1
 
     return float(out_number)   
-    
-    from PIL import Image
-import requests
-from io import BytesIO
 
 img = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/063/000/000/081.png").content))
 img1 = Image.new('L',img.size,0)
