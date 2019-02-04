@@ -9,7 +9,7 @@ import LoadTrainingData
 #__import__ UNet_3Dto2D.py
 #__import__ geo_plot_rainfall.py
 
-
+externals.load_map()
 LoadTrainingData.load_N_images(1000)
 print(N + ' consecutive images loaded - ready to prepare data for training')
 
