@@ -21,6 +21,58 @@ def exists(path):
     r = requests.head(path)
     return r.status_code == requests.codes.ok
 
+def merge3x3(arrImg):
+    imgtop = Image.new("RGB", (768,256))
+    arrImg[0].thumbnail((256, 256), Image.ANTIALIAS)
+    w, h = arrImg[0].size
+    imgtop.paste(arrImg[0], (0, 0, w, h))
+    arrImg[1].thumbnail((256, 256), Image.ANTIALIAS)
+    w, h = arrImg[1].size
+    imgtop.paste(arrImg[1], (256,0 , w+256, h))
+    arrImg[2].thumbnail((256, 256), Image.ANTIALIAS)
+    w, h = arrImg[2].size
+    imgtop.paste(arrImg[2], (512,0, w+512, h))
+    
+    imgmiddle = Image.new("RGB", (768,256))
+    arrImg[3].thumbnail((256, 256), Image.ANTIALIAS)
+    w, h = arrImg[3].size
+    imgmiddle.paste(arrImg[3], (0, 0, w, h))
+    arrImg[4].thumbnail((256, 256), Image.ANTIALIAS)
+    w, h = arrImg[4].size
+    imgmiddle.paste(arrImg[4], (256,0 , w+256, h))
+    arrImg[5].thumbnail((256, 256), Image.ANTIALIAS)
+    w, h = arrImg[5].size
+    imgmiddle.paste(arrImg[5], (512,0, w+512, h))
+    
+    imgbottom = Image.new("RGB", (768,256))
+    arrImg[6].thumbnail((256, 256), Image.ANTIALIAS)
+    w, h = arrImg[6].size
+    imgbottom.paste(arrImg[6], (0, 0, w, h))
+    arrImg[7].thumbnail((256, 256), Image.ANTIALIAS)
+    w, h = arrImg[7].size
+    imgbottom.paste(arrImg[7], (256,0 , w+256, h))
+    arrImg[8].thumbnail((256, 256), Image.ANTIALIAS)
+    w, h = arrImg[8].size
+    imgbottom.paste(arrImg[8], (512,0, w+512, h))
+    
+    imgtot = Image.new("RGB", (768,768))
+    imgtop.thumbnail((768, 256), Image.ANTIALIAS)
+    w, h = imgtop.size
+    imgtot.paste(imgtop, (0, 0, w, h))
+    imgmiddle.thumbnail((768, 256), Image.ANTIALIAS)
+    w, h = imgmiddle.size
+    imgtot.paste(imgmiddle, (0,256 , w, h+256))
+    imgbottom.thumbnail((768, 512), Image.ANTIALIAS)
+    w, h = imgbottom.size
+    imgtot.paste(imgbottom, (0,512 , w, h+512))
+    return imgtot
+
+def ImagetoArr(Img):
+    im = Img.convert('L')
+    arr = np.fromiter(iter(im.getdata()), np.uint8)
+    arr.resize(im.height, im.width)
+    return arr
+
 def load_map():
     im_array=[]
     img1 = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/063/000/000/081.png").content))
