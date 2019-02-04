@@ -48,7 +48,7 @@ def load_N_images(N):
     mapa=load_map
     minute=0
     lasturl='http://static-m.meteo.cat/tiles/radar/2018/03/09/15/42/07/000/000/063/000/000/080.png'
-    print ('strating the collection of ' + N + ' consecutive images')
+    print ('strating the collection of ' + str(N) + ' consecutive images')
     while i<N:
     
         time_slot=str(datetime.datetime.now() - timedelta(hours = 2))
