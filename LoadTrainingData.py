@@ -6,7 +6,7 @@ import time
 import io
 from matplotlib import pyplot as plt
 from datetime import timedelta
-importy sys
+import sys
 from PIL import Image
 import requests
 from io import BytesIO
