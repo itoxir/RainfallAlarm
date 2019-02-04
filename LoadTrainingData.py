@@ -9,7 +9,7 @@ def load_N_images(N):
     print ('strating the collection of ' + N + ' consecutive images')
     while i<N:
     
-            time_slot=str(datetime.datetime.now() - timedelta(hours = 2))
+        time_slot=str(datetime.datetime.now() - timedelta(hours = 2))
         year=(time_slot[0:4])
         month=(time_slot[5:7])
         day=(time_slot[8:10])
