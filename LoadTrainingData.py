@@ -16,6 +16,29 @@ import math
 from bs4 import BeautifulSoup as BS
 import numpy as np
 
+def load_map():
+    im_array=[]
+    img1 = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/063/000/000/081.png").content))
+    im_array.append( img1 )
+    img2 = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/064/000/000/081.png").content))
+    im_array.append( img2 )
+    img3 = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/065/000/000/081.png").content))
+    im_array.append( img3 )
+    img4 = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/063/000/000/080.png").content))
+    im_array.append( img4 )
+    img5 = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/064/000/000/080.png").content))
+    im_array.append( img5 )
+    img6 = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/065/000/000/080.png").content))
+    im_array.append( img6 )
+    img7 = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/063/000/000/079.png").content))
+    im_array.append( img7 )
+    img8 = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/064/000/000/079.png").content))
+    im_array.append( img8 )
+    img9 = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/065/000/000/079.png").content))
+    im_array.append( img9 )
+    mapa=merge3x3(im_array)
+    return mapa
+
 def load_N_images(N):
     img = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/063/000/000/081.png").content))
     img1 = Image.new('L',img.size,0)
