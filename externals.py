@@ -192,7 +192,7 @@ def expand_Values_in_Map(PposX,PposY,Pvals):
     out.save('example2.png')
     return outarray
 
-def load_colors()
+def load_colors():
     hex_01="8000FF"
     rgb1=hex2rgb(hex_01)
     hex_02="4000FF"
