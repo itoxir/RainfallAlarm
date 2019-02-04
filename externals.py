@@ -1,21 +1,3 @@
-import datetime
-import numpy as np
-import urllib
-import io
-from matplotlib import pyplot as plt
-from datetime import timedelta
-import sys
-sys.path.append('/usr/local/lib/python2.7/site-packages')
-from PIL import Image
-import requests
-import math
-from bs4 import BeautifulSoup as BS
-from PIL import Image
-import requests
-from io import BytesIO
-
-pathDropbox='C:/Users/itoxi/Dropbox/RAinDar'
-
 def exists(path):
     r = requests.head(path)
     return r.status_code == requests.codes.ok
