@@ -6,7 +6,7 @@ def load_N_images(N):
     mapa=load_map
     minute=0
     lasturl='http://static-m.meteo.cat/tiles/radar/2018/03/09/15/42/07/000/000/063/000/000/080.png'
-    
+    print ('strating the collection of ' + N + ' consecutive images')
     while i<N:
     
             time_slot=str(datetime.datetime.now() - timedelta(hours = 2))
@@ -91,7 +91,7 @@ def load_N_images(N):
                 except:
                     img9 = Image.new('L',sizeImg,0)
                 im_parts_array.append( img9 )
-                print( '  .  .  .  ' + ' image #' +  str(i) + ' found at %s/%s/%s %s:%s:%s' %(str(year),str(month),str(day),hour,str(round_minute),str(second)))
+                print( '  .  .  .  ' + ' image #' +  str(i) + ' found at %s/%s/%s %s:%s:%s' %(str(year),str(month),str(day),hour,str(round_minute),str(second)) + ' - ' + str(datetime.datetime.now()))
                 img_i=merge3x3(im_parts_array)
                 im_array.append(img_i)
                 imgfound=True
@@ -100,4 +100,5 @@ def load_N_images(N):
             if imgfound==True:
                 break 
         time.sleep(60*2)
+        print ('looping')
     return im_array;
