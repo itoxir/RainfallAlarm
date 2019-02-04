@@ -9,7 +9,6 @@ sys.path.append('/usr/local/lib/python2.7/site-packages')
 from PIL import Image
 import requests
 import math
-import cv2
 from bs4 import BeautifulSoup as BS
 pathDropbox='C:/Users/itoxi/Dropbox/RAinDar'
 
