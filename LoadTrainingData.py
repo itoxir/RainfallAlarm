@@ -1,5 +1,6 @@
 def load_N_images(N):
-    
+    img = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/063/000/000/081.png").content))
+    img1 = Image.new('L',img.size,0)
     i=0
     im_array=[]
     sizeImg = img1.size
