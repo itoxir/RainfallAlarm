@@ -1,10 +1,7 @@
 import importlib
 
-moduleName = input('externals.py')
-importlib.import_module(moduleName)
-
-moduleName = input('LoadTrainingData.py')
-importlib.import_module(moduleName)
+import externals
+import LoadTrainingData
 
 #__import__ externals.py
 #__import__ LoadRealTimeData.py
@@ -13,7 +10,7 @@ importlib.import_module(moduleName)
 #__import__ geo_plot_rainfall.py
 
 
-load_N_images(1000)
+LoadTrainingData.load_N_images(1000)
 print(N + ' consecutive images loaded - ready to prepare data for training')
 
 # define and call function to prepare data for sets of 10+1 images to be trained.
