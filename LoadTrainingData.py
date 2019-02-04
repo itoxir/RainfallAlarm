@@ -1,3 +1,21 @@
+import datetime
+import numpy as np
+import urllib
+import time
+
+import io
+from matplotlib import pyplot as plt
+from datetime import timedelta
+importy sys
+from PIL import Image
+import requests
+from io import BytesIO
+
+import requests
+import math
+from bs4 import BeautifulSoup as BS
+import numpy as np
+
 def load_N_images(N):
     img = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/063/000/000/081.png").content))
     img1 = Image.new('L',img.size,0)
