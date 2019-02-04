@@ -1,3 +1,21 @@
+import datetime
+import numpy as np
+import urllib
+import time
+
+import io
+from matplotlib import pyplot as plt
+from datetime import timedelta
+importy sys
+from PIL import Image
+import requests
+from io import BytesIO
+
+import requests
+import math
+from bs4 import BeautifulSoup as BS
+import numpy as np
+
 def exists(path):
     r = requests.head(path)
     return r.status_code == requests.codes.ok
