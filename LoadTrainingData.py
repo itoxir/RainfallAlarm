@@ -108,7 +108,7 @@ def load_N_images(N):
     print ('strating the collection of ' + str(N) + ' consecutive images')
     while i<N:
     
-        time_slot=str(datetime.datetime.now() - timedelta(hours = 2))
+        time_slot=str(datetime.datetime.now() - timedelta(hours = 1))
         year=(time_slot[0:4])
         month=(time_slot[5:7])
         day=(time_slot[8:10])
@@ -190,7 +190,7 @@ def load_N_images(N):
                 except:
                     img9 = Image.new('L',sizeImg,0)
                 im_parts_array.append( img9 )
-                print( '  .  .  .  ' + ' image #' +  str(i) + ' found at %s/%s/%s %s:%s:%s' %(str(year),str(month),str(day),hour,str(round_minute),str(second)) + ' - ' + str(datetime.datetime.now()))
+                print( '  .  .  .  ' + ' image #' +  str(i) + ' found at %s/%s/%s %s:%s:%s' %(str(year),str(month),str(day),str(hour),str(round_minute),str(second)) + ' - ' + str(datetime.datetime.now()))
                 img_i=merge3x3(im_parts_array)
                 im_array.append(img_i)
                 imgfound=True
