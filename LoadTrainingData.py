@@ -282,7 +282,7 @@ def load_N_images(N):
                     
                 print( '  .  .  .  ' + ' avg, min and max Temp maps of frame #' +  str(i) + ' created at %s/%s/%s %s:%s:%s' %(str(year),str(month),str(day),str(hour),
                 
-                                                                                                                              i=i+1
+                i=i+1
             if imgfound==True:
                 break 
         time.sleep(60*2)
