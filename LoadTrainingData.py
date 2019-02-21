@@ -262,7 +262,7 @@ def load_N_images(N):
                 except:
                     img9 = Image.new('L',sizeImg,0)
                 im_parts_array.append( img9 )
-                print( '  .  .  .  ' + ' image #' +  str(i) + ' found at %s/%s/%s %s:%s:%s' %(str(year),str(month),str(day),str(hour),str(round_minute),str(second)) + ' - ' + str(time_slot) + ' - ' + str(datetime.datetime.now()))
+                print( '  .  .  .  ' + ' image #' +  str(i) + ' found at %s/%s/%s %s:%s:%s' %(str(year),str(month),str(day),str(hour),str(round_minute),str(second)) + ' - ' + str(time_slot) )
                 img_i=merge3x3(im_parts_array)
                 im_array.append(img_i)
                 imgfound=True
@@ -279,7 +279,10 @@ def load_N_images(N):
                     MaxTempMap.append(expand_Values_in_Map( PosX, PosY, MaxTemp,  'maxTempMap.png'))
                     MinTempMap.append(expand_Values_in_Map( PosX, PosY, MinTemp,  'minTempMap.png'))
                     HumidityMap.append(expand_Values_in_Map( PosX, PosY, Humidity, 'HumidityMap.png'))
-                i=i+1
+                    
+                print( '  .  .  .  ' + ' avg, min and max Temp maps of frame #' +  str(i) + ' created at %s/%s/%s %s:%s:%s' %(str(year),str(month),str(day),str(hour),
+                
+                                                                                                                              i=i+1
             if imgfound==True:
                 break 
         time.sleep(60*2)
