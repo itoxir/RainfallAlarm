@@ -280,7 +280,7 @@ def load_N_images(N):
                     MinTempMap.append(expand_Values_in_Map( PosX, PosY, MinTemp,  'minTempMap.png'))
                     HumidityMap.append(expand_Values_in_Map( PosX, PosY, Humidity, 'HumidityMap.png'))
                     
-                print( '  .  .  .  ' + ' avg, min and max Temp maps of frame #' +  str(i) + ' created at %s/%s/%s %s:%s:%s' %(str(year),str(month),str(day),str(hour),
+                print( '  .  .  .  ' + ' avg, min and max Temp maps of frame #' +  str(i) + ' created at %s/%s/%s %s:%s:%s' %(str(year),str(month),str(day),str(hour),str(round_minute),str(second)) + ' - ' + str(time_slot) )
                 
                 i=i+1
             if imgfound==True:
