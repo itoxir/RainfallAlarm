@@ -67,6 +67,39 @@ def merge3x3(arrImg):
     imgtot.paste(imgbottom, (0,512 , w, h+512))
     return imgtot
 
+def expand_Values_in_Map(PposX,PposY,Pvals):
+    im = Image.open('mapa.png')
+    out = im.convert("L")
+    px = out.load()
+    for i in range(0,out.size[1]):
+        for y in range(0,out.size[1]):
+            px[i,y]=0
+    numPoints=len(Pvals)
+    acumX=0
+    acumY=0
+    for l in range(0,700):
+        X=-math.pow(-1,l)
+        Y=-math.pow(-1,l)
+        for k in range(1,l):
+            for p in range(0,numPoints):
+                try:
+                    if px[PposX[numPoints-p]+acumX,PposY[numPoints-p]+acumY]==0:
+                        px[PposX[numPoints-p]+acumX,PposY[numPoints-p]+acumY]=int(Pvals[numPoints-p])
+                except:
+                    '''do nothing'''
+            acumX=acumX+X
+        for k in range(1,l):
+            for p in range(0,numPoints):
+                try:
+                    if px[PposX[numPoints-p]+acumX,PposY[numPoints-p]+acumY]==0:
+                        px[PposX[numPoints-p]+acumX,PposY[numPoints-p]+acumY]=int(Pvals[numPoints-p])
+                except:
+                    '''do nothing'''
+            acumY=acumY+Y  
+    outarray=np.asarray(out)
+    out.save('example2.png')
+    return outarray
+
 def ImagetoArr(Img):
     im = Img.convert('L')
     arr = np.fromiter(iter(im.getdata()), np.uint8)
