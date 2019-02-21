@@ -67,6 +67,26 @@ def merge3x3(arrImg):
     imgtot.paste(imgbottom, (0,512 , w, h+512))
     return imgtot
 
+def extract_nbr(input_str):
+    if input_str is None or input_str == '':
+        return 0
+    deci=False
+    out_number = ''
+    startcounting=False
+    for ele in input_str:
+        if ele=='>':
+            startcounting=True
+        if startcounting==True:
+            if ele.isdigit() and deci==False:
+                out_number += ele
+            elif ele=='.':
+                out_number=float(out_number) 
+                deci=True
+            if ele.isdigit() and deci==True: 
+                out_number += float(ele)*0.1
+
+    return float(out_number)   
+
 def expand_Values_in_Map(PposX,PposY,Pvals):
     im = Image.open('mapa.png')
     out = im.convert("L")
@@ -130,10 +150,29 @@ def load_map():
     return mapa
 
 def load_N_images(N):
+    
+    Stations = ['La seu Urgell', 'El pont de Suert', 'Nuria', 'Mollo' ,'Espolla', 'Portbou', 'Roses', 'Castello Empuries', 'Cabanes' ,'Vall den Bas', 'Queralt', 'Lladurs', 'Oliana', 'Organyà', 'Sant pere pescador', 'Tallada de Empordà', 'La bisbal de Empordà', 'Cassà de la selva', 'Viloví Onyà', 'Viladrau', 'Puig Sessolles', 'Artés', 'El pont de vilomara', 'Sant Llorenç Savall', 'Sant Salvador de Guardiola', 'Rellinars', 'La panadella', 'Cervera', 'El Canós', 'CastellNou de Seana', 'Vallfogona de Balaguer', 'Els Alamús', 'Alguaire', 'Alfarràs', 'Albesa', 'Gimenells', 'Raimat', 'Golmés', 'El Poal', 'Òdena', 'Montserrat', 'Hostalets de Pierola', 'Caldes de Montbui', 'Malgrat de Mar', 'Cabrils', 'Barcelona El Raval', 'El Prat ', 'Vallirana', 'Cunit', 'El Vendrell', 'La Bisbal del penedès', 'Nulles', 'Torredembarra', 'Constantí', 'Espluga del Francolí', 'Torroja del Priorat', 'Torres del Segre', 'Aitona', 'Maials', 'El Masroig', 'Benissanet', 'Gandesa', 'Batea', 'PN dels ports', 'Illa de buda', 'Amposta', 'Mas de Barberans', 'Ulldecona']
+    Codes= ['CD', 'CT', 'DG', 'CG', 'VZ', 'D6', 'D4', 'W1', 'U1', 'W9', 'WM', 'VO', 'W5', 'CJ', 'U2', 'UB', 'DF', 'UN', 'VN', 'WS', 'XK', 'WW', 'R1', 'VV', 'CL', 'VU', 'XA', 'C8', 'VD', 'C6', 'V1', 'XM', 'X3', 'WK', 'WB', 'VH', 'VK', 'WC', 'V8', 'H1', 'WN', 'CE', 'X9', 'WT', 'UP', 'X4', 'XL', 'D3', 'WZ', 'D9', 'WO', 'VY', 'DK', 'VQ', 'CW', 'WR', 'X7', 'VE', 'WI', 'WJ', 'VB', 'XP', 'WD', 'X5', 'DL', 'UU', 'C9', 'UX']
+    PosX=[388, 322, 448, 476, 529, 540, 546, 538, 528, 473, 420, 391, 373, 377, 535, 534, 532, 518, 505, 471, 479, 433, 427, 422, 417, 430, 386, 370, 364, 343, 328, 321, 307, 306, 316, 297, 307, 341, 331, 401, 421, 417, 453, 503, 467, 454, 444, 429, 399, 395, 387, 376, 383, 366, 353, 330, 302, 296, 300, 323, 314, 294, 281, 300, 322, 307, 286, 292]
+    PosY=[343, 336, 339, 342, 337, 335, 354, 353, 347, 373, 371, 383, 379, 360, 364, 376, 592, 402, 403, 405, 417, 410, 425, 427, 427, 432, 436, 427, 417, 429, 419, 434, 419, 409, 419, 428, 432, 432, 426, 433, 433, 445, 434, 430, 444, 462, 470, 466, 483, 481, 472, 474, 490, 489, 461, 481, 442, 449, 464, 493, 505, 502, 497, 525, 545, 542, 542, 555] 
+    
+    NumStations=len(Codes)
+    AvTemp=np.ones(NumStations)
+    MaxTemp=np.ones(NumStations)
+    MinTemp=np.ones(NumStations)
+    Humidity=np.ones(NumStations)
+
     img = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/063/000/000/081.png").content))
     img1 = Image.new('L',img.size,0)
+    
     i=0
+    
     im_array=[]
+    AvTempMap=[]
+    MaxTempMap=[]
+    MinTempMap=[]
+    HumidityMap=[]
+    
     sizeImg = img1.size
     mapa=load_map
     minute=0
@@ -227,7 +266,19 @@ def load_N_images(N):
                 img_i=merge3x3(im_parts_array)
                 im_array.append(img_i)
                 imgfound=True
-                time.sleep(60*4)
+                
+                for x in range (0, len(Codes)): 
+                    page=requests.get('http://www.meteo.cat/observacions/xema/dades?codi=' + str(Codes[x])+'&dia='+str(year[0])+'-'+str(month[0])+'-'+str(day[0])+'T'+str(hour[0])+':00Z')
+                    soup = BS(page.text, 'html.parser')
+                    AvTemp[x]=extract_nbr(str(soup.select("table tbody tr td")[0]))
+                    MaxTemp[x]=extract_nbr(str(soup.select("table tbody tr td")[1]))
+                    MinTemp[x]=extract_nbr(str(soup.select("table tbody tr td")[3]))
+                    Humidity[x]=extract_nbr(str(soup.select("table tbody tr td")[5]))
+                    
+                    AvTempMap.append(expand_Values_in_Map( PosX, PosY, AvTemp,   'avgTempMap.png'))
+                    MaxTempMap.append(expand_Values_in_Map( PosX, PosY, MaxTemp,  'maxTempMap.png'))
+                    MinTempMap.append(expand_Values_in_Map( PosX, PosY, MinTemp,  'minTempMap.png'))
+                    HumidityMap.append(expand_Values_in_Map( PosX, PosY, Humidity, 'HumidityMap.png'))
                 i=i+1
             if imgfound==True:
                 break 
