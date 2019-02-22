@@ -268,20 +268,20 @@ def load_N_images(N):
                 imgfound=True
                 
                 for x in range (0, len(Codes)): 
-                    page=requests.get('http://www.meteo.cat/observacions/xema/dades?codi=' + str(Codes[x])+'&dia='+str(year[0])+'-'+str(month[0])+'-'+str(day[0])+'T'+str(hour[0])+':00Z')
+                    print ('http://www.meteo.cat/observacions/xema/dades?codi=' + str(Codes[x])+'&dia='+str(year)+'-'+str(month)+'-'+str(day)+'T'+str(hour)+':00Z')
+                    page=requests.get('http://www.meteo.cat/observacions/xema/dades?codi=' + str(Codes[x])+'&dia='+str(year)+'-'+str(month)+'-'+str(day)+'T'+str(hour)+':00Z')
                     soup = BS(page.text, 'html.parser')
                     AvTemp[x]=extract_nbr(str(soup.select("table tbody tr td")[0]))
                     MaxTemp[x]=extract_nbr(str(soup.select("table tbody tr td")[1]))
                     MinTemp[x]=extract_nbr(str(soup.select("table tbody tr td")[3]))
                     Humidity[x]=extract_nbr(str(soup.select("table tbody tr td")[5]))
                     
-                    AvTempMap.append(expand_Values_in_Map( PosX, PosY, AvTemp,   'avgTempMap.png'))
-                    MaxTempMap.append(expand_Values_in_Map( PosX, PosY, MaxTemp,  'maxTempMap.png'))
-                    MinTempMap.append(expand_Values_in_Map( PosX, PosY, MinTemp,  'minTempMap.png'))
-                    HumidityMap.append(expand_Values_in_Map( PosX, PosY, Humidity, 'HumidityMap.png'))
-                    
-                print( '  .  .  .  ' + ' avg, min and max Temp maps of frame #' +  str(i) + ' created at %s/%s/%s %s:%s:%s' %(str(year),str(month),str(day),str(hour),str(round_minute),str(second)) + ' - ' + str(time_slot) )
-                
+                    AvTempMap.append(expand_Values_in_Map( PosX, PosY, AvTemp))
+                    MaxTempMap.append(expand_Values_in_Map( PosX, PosY, MaxTemp))
+                    MinTempMap.append(expand_Values_in_Map( PosX, PosY, MinTemp))
+                    HumidityMap.append(expand_Values_in_Map( PosX, PosY, Humidity))
+    
+                print( '  .  .  .  ' + ' avg, min and max Temp maps of frame #' +  str(i) + ' created at %s/%s/%s %s:%s:%s' %(str(year),str(month),str(day),str(hour),str(round_minute),str(second)) + ' - ' + str(time_slot) )            
                 i=i+1
             if imgfound==True:
                 break 
