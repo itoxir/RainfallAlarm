@@ -279,10 +279,15 @@ def load_N_images(N):
                     MinTemp[x]=extract_nbr(str(soup.select("table tbody tr td")[3]))
                     Humidity[x]=extract_nbr(str(soup.select("table tbody tr td")[5]))
                     
-                    AvTempMap.append(expand_Values_in_Map( PosX, PosY, AvTemp))
-                    MaxTempMap.append(expand_Values_in_Map( PosX, PosY, MaxTemp))
-                    MinTempMap.append(expand_Values_in_Map( PosX, PosY, MinTemp))
-                    HumidityMap.append(expand_Values_in_Map( PosX, PosY, Humidity))
+                    turn=divmod(N,4)
+                    if turn[1]=0:
+                        AvTempMap.append(expand_Values_in_Map( PosX, PosY, AvTemp))
+                    if turn[1]=1:
+                        MaxTempMap.append(expand_Values_in_Map( PosX, PosY, MaxTemp))
+                    if turn[2]=2:
+                        MinTempMap.append(expand_Values_in_Map( PosX, PosY, MinTemp))
+                    if turn[1]=3:
+                        HumidityMap.append(expand_Values_in_Map( PosX, PosY, Humidity))
     
                 print( '  .  .  .  ' + ' avg, min and max Temp maps of frame #' +  str(i) + ' created at %s/%s/%s %s:%s:%s' %(str(year),str(month),str(day),str(hour),str(round_minute),str(second)) + ' - ' + str(time_slot) )            
                 i=i+1
