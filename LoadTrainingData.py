@@ -88,7 +88,7 @@ def extract_nbr(input_str):
     return float(out_number)   
 
 def expand_Values_in_Map(PposX,PposY,Pvals):
-    im = Image.open('mapa.png')
+    im = Image.open(pathDropbox +'/mapa.png')
     out = im.convert("L")
     px = out.load()
     for i in range(0,out.size[1]):
