@@ -335,7 +335,7 @@ def load_N_images(N):
                 # (plus this parameters are not updated every 6 minutes, but every hour)
                 # the creation of each map is done separately, one at a time after acquiring cloud_intensity map.
                 turn=divmod(N,7)
-                if turn[1] = 0:
+                if turn[1] == 0:
                     AvTempMap.append(expand_Values_in_Map( PosX, PosY, AvTemp))
                 if turn[1] == 1:
                     MaxTempMap.append(expand_Values_in_Map( PosX, PosY, MaxTemp))
