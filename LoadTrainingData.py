@@ -17,6 +17,9 @@ import math
 from bs4 import BeautifulSoup as BS
 import numpy as np
 
+pathDropbox='C:/Users/itoxi/Dropbox/RAinDar'
+
+
 def exists(path):
     r = requests.head(path)
     return r.status_code == requests.codes.ok
