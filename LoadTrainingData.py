@@ -337,17 +337,17 @@ def load_N_images(N):
                 turn=divmod(N,7)
                 if turn[1] = 0:
                     AvTempMap.append(expand_Values_in_Map( PosX, PosY, AvTemp))
-                if turn[1] = 1:
+                if turn[1] == 1:
                     MaxTempMap.append(expand_Values_in_Map( PosX, PosY, MaxTemp))
-                if turn[2] = 2:
+                if turn[1] == 2:
                     MinTempMap.append(expand_Values_in_Map( PosX, PosY, MinTemp))
-                if turn[1] = 3:
+                if turn[1] == 3:
                     HumidityMap.append(expand_Values_in_Map( PosX, PosY, Humidity))
-                if turn[1] = 4:
+                if turn[1] == 4:
                     PressureMap.append(expand_Values_in_Map( PosX, PosY, Pressure))
-                if turn[1] = 5:
+                if turn[1] == 5:
                     WindspeedVertMap.append(expand_Values_in_Map( PosX, PosY, WindspeedVert))
-                if turn[1] = 6:
+                if turn[1] == 6:
                     WindspeedHorMap.append(expand_Values_in_Map( PosX, PosY, WindspeedHor))
     
                 print( '  .  .  .  ' + ' avg, min and max Temp maps of frame #' +  str(i) + ' created at %s/%s/%s %s:%s:%s' %(str(year),str(month),str(day),str(hour),str(round_minute),str(second)) + ' - ' + str(time_slot) )            
