@@ -70,24 +70,35 @@ def merge3x3(arrImg):
     imgtot.paste(imgbottom, (0,512 , w, h+512))
     return imgtot
 
-def extract_nbr(input_str):
+def extract_nbr(input_str, numpos=1):
     if input_str is None or input_str == '':
         return 0
     deci=False
     out_number = ''
     startcounting=False
     for ele in input_str:
-        if ele=='>':
-            startcounting=True
-        if startcounting==True:
-            if ele.isdigit() and deci==False:
-                out_number += ele
-            elif ele=='.':
-                out_number=float(out_number) 
-                deci=True
-            if ele.isdigit() and deci==True: 
-                out_number += float(ele)*0.1
-
+        if numpos==2:
+            if ele=='-':
+                startcounting=True
+            if startcounting==True:
+                if ele.isdigit() and deci==False:
+                    out_number += ele
+                elif ele=='.':
+                    out_number=float(out_number) 
+                    deci=True
+                if ele.isdigit() and deci==True: 
+                    out_number += float(ele)*0.1
+        else:   
+            if ele=='>':
+                startcounting=True
+            if startcounting==True:
+                if ele.isdigit() and deci==False:
+                    out_number += ele
+                elif ele=='.':
+                    out_number=float(out_number) 
+                    deci=True
+                if ele.isdigit() and deci==True: 
+                    out_number += float(ele)*0.1
     return float(out_number)   
 
 def expand_Values_in_Map(PposX,PposY,Pvals):
@@ -130,7 +141,7 @@ def ImagetoArr(Img):
     return arr
 
 def load_map():
-    im_array=[]
+    im_array = []
     img1 = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/063/000/000/081.png").content))
     im_array.append( img1 )
     img2 = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/064/000/000/081.png").content))
@@ -155,64 +166,77 @@ def load_map():
 def load_N_images(N):
     
     Stations = ['La seu Urgell', 'El pont de Suert', 'Nuria', 'Mollo' ,'Espolla', 'Portbou', 'Roses', 'Castello Empuries', 'Cabanes' ,'Vall den Bas', 'Queralt', 'Lladurs', 'Oliana', 'Organyà', 'Sant pere pescador', 'Tallada de Empordà', 'La bisbal de Empordà', 'Cassà de la selva', 'Viloví Onyà', 'Viladrau', 'Puig Sessolles', 'Artés', 'El pont de vilomara', 'Sant Llorenç Savall', 'Sant Salvador de Guardiola', 'Rellinars', 'La panadella', 'Cervera', 'El Canós', 'CastellNou de Seana', 'Vallfogona de Balaguer', 'Els Alamús', 'Alguaire', 'Alfarràs', 'Albesa', 'Gimenells', 'Raimat', 'Golmés', 'El Poal', 'Òdena', 'Montserrat', 'Hostalets de Pierola', 'Caldes de Montbui', 'Malgrat de Mar', 'Cabrils', 'Barcelona El Raval', 'El Prat ', 'Vallirana', 'Cunit', 'El Vendrell', 'La Bisbal del penedès', 'Nulles', 'Torredembarra', 'Constantí', 'Espluga del Francolí', 'Torroja del Priorat', 'Torres del Segre', 'Aitona', 'Maials', 'El Masroig', 'Benissanet', 'Gandesa', 'Batea', 'PN dels ports', 'Illa de buda', 'Amposta', 'Mas de Barberans', 'Ulldecona']
-    Codes= ['CD', 'CT', 'DG', 'CG', 'VZ', 'D6', 'D4', 'W1', 'U1', 'W9', 'WM', 'VO', 'W5', 'CJ', 'U2', 'UB', 'DF', 'UN', 'VN', 'WS', 'XK', 'WW', 'R1', 'VV', 'CL', 'VU', 'XA', 'C8', 'VD', 'C6', 'V1', 'XM', 'X3', 'WK', 'WB', 'VH', 'VK', 'WC', 'V8', 'H1', 'WN', 'CE', 'X9', 'WT', 'UP', 'X4', 'XL', 'D3', 'WZ', 'D9', 'WO', 'VY', 'DK', 'VQ', 'CW', 'WR', 'X7', 'VE', 'WI', 'WJ', 'VB', 'XP', 'WD', 'X5', 'DL', 'UU', 'C9', 'UX']
-    PosX=[388, 322, 448, 476, 529, 540, 546, 538, 528, 473, 420, 391, 373, 377, 535, 534, 532, 518, 505, 471, 479, 433, 427, 422, 417, 430, 386, 370, 364, 343, 328, 321, 307, 306, 316, 297, 307, 341, 331, 401, 421, 417, 453, 503, 467, 454, 444, 429, 399, 395, 387, 376, 383, 366, 353, 330, 302, 296, 300, 323, 314, 294, 281, 300, 322, 307, 286, 292]
-    PosY=[343, 336, 339, 342, 337, 335, 354, 353, 347, 373, 371, 383, 379, 360, 364, 376, 592, 402, 403, 405, 417, 410, 425, 427, 427, 432, 436, 427, 417, 429, 419, 434, 419, 409, 419, 428, 432, 432, 426, 433, 433, 445, 434, 430, 444, 462, 470, 466, 483, 481, 472, 474, 490, 489, 461, 481, 442, 449, 464, 493, 505, 502, 497, 525, 545, 542, 542, 555] 
+    Codes    = ['CD', 'CT', 'DG', 'CG', 'VZ', 'D6', 'D4', 'W1', 'U1', 'W9', 'WM', 'VO', 'W5', 'CJ', 'U2', 'UB', 'DF', 'UN', 'VN', 'WS', 'XK', 'WW', 'R1', 'VV', 'CL', 'VU', 'XA', 'C8', 'VD', 'C6', 'V1', 'XM', 'X3', 'WK', 'WB', 'VH', 'VK', 'WC', 'V8', 'H1', 'WN', 'CE', 'X9', 'WT', 'UP', 'X4', 'XL', 'D3', 'WZ', 'D9', 'WO', 'VY', 'DK', 'VQ', 'CW', 'WR', 'X7', 'VE', 'WI', 'WJ', 'VB', 'XP', 'WD', 'X5', 'DL', 'UU', 'C9', 'UX']
+    PosX     = [388, 322, 448, 476, 529, 540, 546, 538, 528, 473, 420, 391, 373, 377, 535, 534, 532, 518, 505, 471, 479, 433, 427, 422, 417, 430, 386, 370, 364, 343, 328, 321, 307, 306, 316, 297, 307, 341, 331, 401, 421, 417, 453, 503, 467, 454, 444, 429, 399, 395, 387, 376, 383, 366, 353, 330, 302, 296, 300, 323, 314, 294, 281, 300, 322, 307, 286, 292]
+    PosY     = [343, 336, 339, 342, 337, 335, 354, 353, 347, 373, 371, 383, 379, 360, 364, 376, 592, 402, 403, 405, 417, 410, 425, 427, 427, 432, 436, 427, 417, 429, 419, 434, 419, 409, 419, 428, 432, 432, 426, 433, 433, 445, 434, 430, 444, 462, 470, 466, 483, 481, 472, 474, 490, 489, 461, 481, 442, 449, 464, 493, 505, 502, 497, 525, 545, 542, 542, 555] 
     
-    NumStations=len(Codes)
-    AvTemp=np.ones(NumStations)
-    MaxTemp=np.ones(NumStations)
-    MinTemp=np.ones(NumStations)
-    Humidity=np.ones(NumStations)
-
-    img = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/063/000/000/081.png").content))
-    img1 = Image.new('L',img.size,0)
+    #declare arrays of parameters
+    NumStations   = len(Codes)
+    AvTemp        = np.ones(NumStations)
+    MaxTemp       = np.ones(NumStations)
+    MinTemp       = np.ones(NumStations)
+    Humidity      = np.ones(NumStations)
+    Pressure      = np.ones(NumStations)
+    WindspeedVert = np.ones(NumStations)
+    WindspeedHor  = np.ones(NumStations)
     
-    i=0
-    
-    im_array=[]
-    AvTempMap=[]
-    MaxTempMap=[]
-    MinTempMap=[]
-    HumidityMap=[]
-    
-    sizeImg = img1.size
+    #declare all image maps that will be created
     mapa=load_map
-    minute=0
-    lasturl='http://static-m.meteo.cat/tiles/radar/2018/03/09/15/42/07/000/000/063/000/000/080.png'
+    im_array         = []
+    AvTempMap        = []
+    MaxTempMap       = []
+    MinTempMap       = []
+    HumidityMap      = []
+    PressureMap      = []
+    WindspeedVertMap = []
+    WindspeedHorMap  = []
+    
+    #read one image to define image size
+    img  = Image.open(BytesIO(requests.get("http://static-m.meteo.cat/tiles/fons/GoogleMapsCompatible/07/000/000/063/000/000/081.png").content))
+    img1 = Image.new('L',img.size,0)
+    lasturl = 'http://static-m.meteo.cat/tiles/radar/2018/03/09/15/42/07/000/000/063/000/000/080.png'
+    sizeImg = img1.size
+        
+    i = 0
+    
     print ('strating the collection of ' + str(N) + ' consecutive images')
     while i<N:
     
-        time_slot=str(datetime.datetime.now() - timedelta(hours = 2))
-        year=(time_slot[0:4])
-        month=(time_slot[5:7])
-        day=(time_slot[8:10])
-        h=int(float(time_slot[11:13]))
-        hour=(str(h) )
-        minute=time_slot[14:16]
-        im_parts_array=[]
-        if int(minute)<6:
-            round_minute=('00')
-        elif int(minute)<12:
-            round_minute=('06')
-        elif int(minute)<18:
-            round_minute=('12')
-        elif int(minute)<24:
-            round_minute=('18')
-        elif int(minute)<30:
-            round_minute=('24')
-        elif int(minute)<36:
-            round_minute=('30')
-        elif int(minute)<42:
-            round_minute=('36')
-        elif int(minute)<48:
-            round_minute=('42')
-        elif int(minute)<54:
-            round_minute=('48')
-        elif int(minute)<60:
-            round_minute=('54')
-        j=0
+        time_slot = str(datetime.datetime.now() - timedelta(hours = 2))
+        year      = (time_slot[0:4])
+        month     = (time_slot[5:7])
+        day       = (time_slot[8:10])
+        h         = int(float(time_slot[11:13]))
+        hour      = (str(h) )
+        
+        #round minutes, images are uploaded each 6 minutes
+        minute = time_slot[14:16]
+        if int(minute)   < 6:
+            round_minute = ('00')
+        elif int(minute) < 12:
+            round_minute = ('06')
+        elif int(minute) < 18:
+            round_minute = ('12')
+        elif int(minute) < 24:
+            round_minute = ('18')
+        elif int(minute) < 30:
+            round_minute = ('24')
+        elif int(minute) < 36:
+            round_minute = ('30')
+        elif int(minute) < 42:
+            round_minute = ('36')
+        elif int(minute) < 48:
+            round_minute = ('42')
+        elif int(minute) < 54:
+            round_minute = ('48')
+        elif int(minute) < 60:
+            round_minute = ('54')
+            
+        j = 0
         imgfound=False
+        im_parts_array = []
+        
+        #images are uploaded any second within a minute. loop.
         for j in range(0,60):             
             sec=str(j).zfill(2)   
             url=('http://static-m.meteo.cat/tiles/radar/%s/%s/%s/%s/%s/%s/000/000/064/000/000/079.png' % (str(year),str(month),str(day),str(hour),str(round_minute),str(sec)))
@@ -265,34 +289,74 @@ def load_N_images(N):
                 except:
                     img9 = Image.new('L',sizeImg,0)
                 im_parts_array.append( img9 )
+                
                 print( '  .  .  .  ' + ' image #' +  str(i) + ' found at %s/%s/%s %s:%s:%s' %(str(year),str(month),str(day),str(hour),str(round_minute),str(second)) + ' - ' + str(time_slot) )
+                
                 img_i=merge3x3(im_parts_array)
                 im_array.append(img_i)
                 imgfound=True
                 
+                #load also temperature, pressure, humidity, wind speed values of all stations in the website.
                 for x in range (0, len(Codes)): 
-                    print ('http://www.meteo.cat/observacions/xema/dades?codi=' + str(Codes[x])+'&dia='+str(year)+'-'+str(month)+'-'+str(day)+'T'+str(hour)+':00Z')
-                    page=requests.get('http://www.meteo.cat/observacions/xema/dades?codi=' + str(Codes[x])+'&dia='+str(year)+'-'+str(month)+'-'+str(day)+'T'+str(hour)+':00Z')
+                    page = requests.get('http://www.meteo.cat/observacions/xema/dades?codi=' + str(Codes[x])+'&dia='+str(year)+'-'+str(month)+'-'+str(day)+'T'+str(hour)+':00Z')
                     soup = BS(page.text, 'html.parser')
-                    AvTemp[x]=extract_nbr(str(soup.select("table tbody tr td")[0]))
-                    MaxTemp[x]=extract_nbr(str(soup.select("table tbody tr td")[1]))
-                    MinTemp[x]=extract_nbr(str(soup.select("table tbody tr td")[3]))
-                    Humidity[x]=extract_nbr(str(soup.select("table tbody tr td")[5]))
+                    AvTemp  [x] = extract_nbr(str(soup.select("table tbody tr td")[0]))
+                    MaxTemp [x] = extract_nbr(str(soup.select("table tbody tr td")[1]))
+                    MinTemp [x] = extract_nbr(str(soup.select("table tbody tr td")[3]))
+                    Humidity[x] = extract_nbr(str(soup.select("table tbody tr td")[5]))
                     
-                    turn=divmod(N,4)
-                    if turn[1]=0:
-                        AvTempMap.append(expand_Values_in_Map( PosX, PosY, AvTemp))
-                    if turn[1]=1:
-                        MaxTempMap.append(expand_Values_in_Map( PosX, PosY, MaxTemp))
-                    if turn[2]=2:
-                        MinTempMap.append(expand_Values_in_Map( PosX, PosY, MinTemp))
-                    if turn[1]=3:
-                        HumidityMap.append(expand_Values_in_Map( PosX, PosY, Humidity))
+                    #some stations don't have all meteorological parameteres -> need to check Pressure
+                    try:
+                        if (str(soup.select("table tbody tr th")[6]) == '<th>Pressió atmosfèrica mitjana</th>'):
+                            Pressure[x] = extract_nbr(str(soup.select("table tbody tr td")[9]))
+                        else:
+                            #if Station has no Pressure data, use previous station records.
+                            Pressure[x] = Pressure[x-1]
+                    except:
+                        Pressure[x]=Pressure[x-1]
+                        
+                    # same with wind speed and angle 
+                    try:
+                        if (str(soup.select("table tbody tr th")[6]) == '<th>Ratxa màxima del vent <span>(10 m)</span></th>'):
+                            WindspeedVert[x] = (-1)*extract_nbr(str(soup.select("table tbody tr td")[8]))*np.sin(np.deg2rad(extract_nbr(str(soup.select("table tbody tr td")[8]),2)))
+                            WindspeedHor[x]  = extract_nbr(str(soup.select("table tbody tr td")[8]))*np.cos(np.deg2rad(extract_nbr(str(soup.select("table tbody tr td")[8]),2)))
+                        
+                        elif ((str(soup.select("table tbody tr th")[5]) == '<th>Ratxa màxima del vent <span>(10 m)</span></th>')):
+                            WindspeedVert[x] = (-1)*extract_nbr(str(soup.select("table tbody tr td")[7]))*np.sin(np.deg2rad(extract_nbr(str(soup.select("table tbody tr td")[7]),2)))
+                            WindspeedHor[x]  = extract_nbr(str(soup.select("table tbody tr td")[7]))*np.cos(np.deg2rad(extract_nbr(str(soup.select("table tbody tr td")[7]),2)))
+                        else:
+                            WindspeedVert[x] = 0;
+                            WindspeedHor[x]  = 0;
+                    except:
+                        WindspeedVert [x] = 0;
+                        WindspeedHor  [x] = 0;
+                        
+                # since at this moment the loading of all stations data and creation of the map is too slow 
+                # (plus this parameters are not updated every 6 minutes, but every hour)
+                # the creation of each map is done separately, one at a time after acquiring cloud_intensity map.
+                turn=divmod(N,7)
+                if turn[1] = 0:
+                    AvTempMap.append(expand_Values_in_Map( PosX, PosY, AvTemp))
+                if turn[1] = 1:
+                    MaxTempMap.append(expand_Values_in_Map( PosX, PosY, MaxTemp))
+                if turn[2] = 2:
+                    MinTempMap.append(expand_Values_in_Map( PosX, PosY, MinTemp))
+                if turn[1] = 3:
+                    HumidityMap.append(expand_Values_in_Map( PosX, PosY, Humidity))
+                if turn[1] = 4:
+                    PressureMap.append(expand_Values_in_Map( PosX, PosY, Pressure))
+                if turn[1] = 5:
+                    WindspeedVertMap.append(expand_Values_in_Map( PosX, PosY, WindspeedVert))
+                if turn[1] = 6:
+                    WindspeedHorMap.append(expand_Values_in_Map( PosX, PosY, WindspeedHor))
     
                 print( '  .  .  .  ' + ' avg, min and max Temp maps of frame #' +  str(i) + ' created at %s/%s/%s %s:%s:%s' %(str(year),str(month),str(day),str(hour),str(round_minute),str(second)) + ' - ' + str(time_slot) )            
-                i=i+1
-            if imgfound==True:
+                i = i+1
+            if imgfound == True:
                 break 
-        time.sleep(60*2)
+        
+        #time.sleep(60*2)
+        
         print ('looping')
-    return im_array;
+        
+    return im_array, AvTempMap, MaxTempMap, MinTempMap, HumidityMap, PressureMap, WindspeedVertMap, WindspeedHorMap;
