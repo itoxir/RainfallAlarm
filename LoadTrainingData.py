@@ -298,6 +298,7 @@ def load_N_images(N):
                 
                 #load also temperature, pressure, humidity, wind speed values of all stations in the website.
                 for x in range (0, len(Codes)): 
+                    print ('extracting data from '+ Stations[x] )
                     page = requests.get('http://www.meteo.cat/observacions/xema/dades?codi=' + str(Codes[x])+'&dia='+str(year)+'-'+str(month)+'-'+str(day)+'T'+str(hour)+':00Z')
                     soup = BS(page.text, 'html.parser')
                     AvTemp  [x] = extract_nbr(str(soup.select("table tbody tr td")[0]))
